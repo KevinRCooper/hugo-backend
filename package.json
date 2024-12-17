@@ -1,0 +1,36 @@
+{
+    "name": "hugo-backend-interview-challenge",
+    "version": "1.0.0",
+    "description": "Hugo backend take home challenge",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon --watch src --exec ts-node --project tsconfig.node.json src/index.ts",
+        "test": "vitest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/popularlab/hugo-backend-interview-challenge.git"
+    },
+    "author": "Hugo Engineering <tech@withhugo.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/popularlab/hugo-backend-interview-challenge/issues"
+    },
+    "homepage": "https://github.com/popularlab/hugo-backend-interview-challenge#readme",
+    "devDependencies": {
+        "@types/node": "^22.10.0",
+        "nodemon": "^3.1.9",
+        "prettier": "^3.4.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.7.2",
+        "vitest": "^2.1.6"
+    },
+    "dependencies": {
+        "@fastify/swagger": "^9.4.0",
+        "@fastify/swagger-ui": "^5.2.0",
+        "dotenv": "^16.4.5",
+        "fastify": "^5.2.0",
+        "fastify-type-provider-zod": "^4.0.2",
+        "zod": "^3.24.1"
+    }
+}
