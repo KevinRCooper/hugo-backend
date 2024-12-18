@@ -9,7 +9,7 @@ export const NewApplicationSchema = z.object({
     garagingAddress: PartialAddressSchema,
     vehicles: PartialVehicleSchema,
     additionalDrivers: PartialAdditionalDriverSchema,
-  }).partial();
+  }).partial().strict();
 export type NewApplication = z.infer<typeof NewApplicationSchema>;
 
 export const ValidApplicationSchema = z.object({
@@ -33,6 +33,6 @@ export const ValidApplicationSchema = z.object({
           message: "No more than 3 additional drivers are allowed.",
         }
       ),
-  });
+  }).strict();
   
   export type ValidApplication = z.infer<typeof ValidApplicationSchema>;

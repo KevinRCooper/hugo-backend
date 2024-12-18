@@ -22,7 +22,7 @@ export const AdditionalDriverSchema = DriverSchema.omit({
     driversLicense: true,
 }).extend({
     relationship: z.enum(['spouse', 'child', 'parent', 'sibling', 'other']),
-});
+}).strict();
 export type AdditionalDriver = z.infer<typeof AdditionalDriverSchema>; 
 
 export const PartialAdditionalDriverSchema = AdditionalDriverSchema.partial();
