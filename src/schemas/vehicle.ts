@@ -2,13 +2,14 @@ import { z } from 'zod';
 import { calculateCheckDigit } from '../util/vinValidation';
 
 const VinSchema = z
-  .string()
-  .length(17)
-  .regex(/^[A-HJ-NPR-Z0-9]+$/, "VIN must exclude invalid characters like I, O, Q.")
-  .refine((vin) => {
-    const checkDigit = vin[8]; // Check digit at the 9th position
-    return calculateCheckDigit(vin) === checkDigit;
-  }, "Invalid VIN check digit");
+    .string()
+    .length(17)
+    .regex(/^[A-HJ-NPR-Z0-9]+$/, "VIN must exclude invalid characters like I, O, Q.")
+    .refine((vin) => {
+        const checkDigit = vin[8]; // Check digit at the 9th position
+        return calculateCheckDigit(vin) === checkDigit;
+    }, "Invalid VIN check digit");
+
 
 export const VehicleSchema = z.object({
     make: z.string().min(2).max(255),
@@ -18,5 +19,20 @@ export const VehicleSchema = z.object({
 });
 export type Vehicle = z.infer<typeof VehicleSchema>;
 
+const createVehiclesSchema = (schema: z.ZodTypeAny) => {
+    return z
+        .record(z.string(), schema)
+        .refine((vehicles) => Object.keys(vehicles).length >= 1, {
+            message: "At least one vehicle is required.",
+        })
+        .refine((vehicles) => Object.keys(vehicles).length <= 3, {
+            message: "No more than 3 vehicles are allowed.",
+        });
+};
+
+export const VehiclesSchema = createVehiclesSchema(VehicleSchema);
+export type Vehicles = z.infer<typeof VehiclesSchema>;
+
+export const PartialVehiclesSchema = createVehiclesSchema(VehicleSchema.partial());
 export const PartialVehicleSchema = VehicleSchema.partial();
-export type PartialVehicle = z.infer<typeof VehicleSchema>;
+

@@ -11,4 +11,4 @@ export const AddressSchema = z.object({
 export type Address = z.infer<typeof AddressSchema>; 
 
 export const PartialAddressSchema = AddressSchema.partial();
-export type PartialAddress = z.infer<typeof PartialAddressSchema>;
+export type PartialAddress = z.infer<typeof PartialAddressSchema>; 

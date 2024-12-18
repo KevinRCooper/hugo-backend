@@ -277,6 +277,760 @@ describe("Hugo API", async () => {
             });
         });
 
+        describe("Mailing Address", () => {
+            test("should create a new application with a valid mailing address", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        mailingAddress: {
+                            street: '123 Main St',
+                            city: 'Anytown',
+                            state: 'CA',
+                            zip: '12345',
+                        },
+                    },
+                });
+
+                expect(response.statusCode).toBe(200);
+            });
+
+            test("should not create a new application with an invalid mailing address", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        mailingAddress: {
+                            street: '123 Main St',
+                            city: 'Anytown',
+                            state: 'C',
+                            zip: '12345',
+                        },
+                    },
+                });
+                const validationResults = await response.json()
+
+                expect(validationResults.statusCode).toBe(400);
+                expect(validationResults.details.summary).toBe(`mailingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+            });
+
+            describe("Street", () => {
+                test("should create a new application with a valid mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '1',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("mailingAddress.street: String must contain at least 2 character(s)");
+                });
+            });
+
+            describe("Unit", () => {
+                test("should create a new application with a valid unit in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                unit: 'Apt 1',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid unit in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                unit: 1,
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("mailingAddress.unit: Expected string, received number");
+                });
+            });
+
+            describe("City", () => {
+                test("should create a new application with a valid city in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid city in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'A',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("mailingAddress.city: String must contain at least 2 character(s)");
+                });
+            });
+
+            describe("State", () => {
+                test("should create a new application with a valid state in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid state in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'C',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe(`mailingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                });
+            });
+
+            describe("Zip", () => {
+                test("should create a new application with a valid zip in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: '12345',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid zip length in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: '1234',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("mailingAddress.zip: String must contain exactly 5 character(s); mailingAddress.zip: Invalid");
+                });
+
+                test("should not create a new application with an invalid zip in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: '1234A',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("mailingAddress.zip: Invalid");
+                });
+
+                test("should not create a new application with an invalid zip type in mailing address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            mailingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: 12345,
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("mailingAddress.zip: Expected string, received number");
+                });
+            });
+        });
+
+        describe("Garaging Address", () => {
+            test("should create a new application with a valid garaging address", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        garagingAddress: {
+                            street: '123 Main St',
+                            city: 'Anytown',
+                            state: 'CA',
+                            zip: '12345',
+                        },
+                    },
+                });
+
+                expect(response.statusCode).toBe(200);
+            });
+
+            test("should not create a new application with an invalid garaging address", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        garagingAddress: {
+                            street: '123 Main St',
+                            city: 'Anytown',
+                            state: 'C',
+                            zip: '12345',
+                        },
+                    },
+                });
+                const validationResults = await response.json()
+
+                expect(validationResults.statusCode).toBe(400);
+                expect(validationResults.details.summary).toBe(`garagingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+            });
+
+            describe("Street", () => {
+                test("should create a new application with a valid garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '1',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("garagingAddress.street: String must contain at least 2 character(s)");
+                });
+            });
+
+            describe("Unit", () => {
+                test("should create a new application with a valid unit in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                unit: 'Apt 1',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid unit in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                unit: 1,
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("garagingAddress.unit: Expected string, received number");
+                });
+            });
+
+            describe("City", () => {
+                test("should create a new application with a valid city in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid city in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'A',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("garagingAddress.city: String must contain at least 2 character(s)");
+                });
+            });
+
+            describe("State", () => {
+                test("should create a new application with a valid state in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid state in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'C',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe(`garagingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                });
+            });
+
+            describe("Zip", () => {
+                test("should create a new application with a valid zip in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: '12345',
+                            },
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid zip length in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: '1234',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("garagingAddress.zip: String must contain exactly 5 character(s); garagingAddress.zip: Invalid");
+                });
+
+                test("should not create a new application with an invalid zip in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: '1234A',
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("garagingAddress.zip: Invalid");
+                });
+
+                test("should not create a new application with an invalid zip type in garaging address", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            garagingAddress: {
+                                street: '123 Main St',
+                                city: 'Anytown',
+                                state: 'CA',
+                                zip: 12345,
+                            },
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("garagingAddress.zip: Expected string, received number");
+                });
+            });
+        });
+
+        describe("Vehicles", () => {
+            test("should create a new application with a valid vehicle", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        vehicles: {
+                            'ABC123': {
+                                make: 'Toyota',
+                                model: 'Camry',
+                                year: 2020,
+                                vin: '2C3KA53G38H165077',
+                            }
+                        }
+                    },
+                });
+
+                expect(response.statusCode).toBe(200);
+            });
+
+            test("should create a new application with multiple valid vehicles", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        vehicles: {
+                            'ABC123': {
+                                make: 'Toyota',
+                                model: 'Camry',
+                                year: 2020,
+                                vin: '2C3KA53G38H165077',
+                            },
+                            'DEF456': {
+                                make: 'Honda',
+                                model: 'Civic',
+                                year: 2015,
+                                vin: '1FTEX15H7RKA82350',
+                            },
+                            'GHI789': {
+                                make: 'Ford',
+                                model: 'F-150',
+                                year: 2018,
+                                vin: '2A4GP44R36R638066',
+                            },
+                        }
+                    },
+                });
+
+                expect(response.statusCode).toBe(200);
+            });
+
+            test("should not create a new application with more than 3 vehicles", async () => {
+                const response = await app.inject({
+                    method: 'POST',
+                    url: '/applications',
+                    payload: {
+                        vehicles: {
+                            'ABC123': {
+                                make: 'Toyota',
+                                model: 'Camry',
+                                year: 2020,
+                                vin: '2C3KA53G38H165077',
+                            },
+                            'DEF456': {
+                                make: 'Honda',
+                                model: 'Civic',
+                                year: 2015,
+                                vin: '1FTEX15H7RKA82350',
+                            },
+                            'GHI789': {
+                                make: 'Ford',
+                                model: 'F-150',
+                                year: 2018,
+                                vin: '2A4GP44R36R638066',
+                            },
+                            'JKL012': {
+                                make: 'Chevy',
+                                model: 'Silverado',
+                                year: 2019,
+                                vin: 'JM1BL1S5XA1129860',
+                            },
+                        }
+                    },
+                });
+                const validationResults = await response.json()
+
+                expect(response.statusCode).toBe(400);
+                expect(validationResults.details.summary).toBe("vehicles: No more than 3 vehicles are allowed.");
+
+            });
+
+            describe("Make", () => {
+                test("should create a new application with a valid make", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    make: 'Toyota',
+                                }
+                            }
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid make", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    make: 'T',
+                                }
+                            }
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("vehicles.ABC123.make: String must contain at least 2 character(s)");
+                });
+            });
+
+            describe("Model", () => {
+                test("should create a new application with a valid model", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    model: 'Camry',
+                                }
+                            }
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid model", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    model: 'C',
+                                }
+                            }
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("vehicles.ABC123.model: String must contain at least 2 character(s)");
+                });
+            });
+
+            describe("Year", () => {
+                test("should create a new application with a valid year", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    year: 2020,
+                                }
+                            }
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid year", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    year: 1984,
+                                }
+                            }
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("vehicles.ABC123.year: Number must be greater than or equal to 1985");
+                });
+            });
+
+            describe("Vin", () => {
+                test("should create a new application with a valid vin", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    vin: '2C3KA53G38H165077', // Random valid VIN
+                                }
+                            }
+                        },
+                    });
+
+                    expect(response.statusCode).toBe(200);
+                });
+
+                test("should not create a new application with an invalid vin length", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    vin: '1234567890123456',
+                                }
+                            }
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("vehicles.ABC123.vin: String must contain exactly 17 character(s); vehicles.ABC123.vin: Invalid VIN check digit");
+                });
+
+                test("should not create a new application with an invalid vin sequence", async () => {
+                    const response = await app.inject({
+                        method: 'POST',
+                        url: '/applications',
+                        payload: {
+                            vehicles: {
+                                'ABC123': {
+                                    vin: '1234567890123456A',
+                                }
+                            }
+                        },
+                    });
+                    const validationResults = await response.json()
+
+                    expect(validationResults.statusCode).toBe(400);
+                    expect(validationResults.details.summary).toBe("vehicles.ABC123.vin: Invalid VIN check digit");
+                });
+            });
+        });
+
         describe("Additional Drivers", () => {
             describe("First Name", () => {
                 test("should create a new application with valid first name", async () => {
@@ -285,7 +1039,9 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                firstName: 'Tdd',
+                                "Driver1": {
+                                    firstName: 'Tdd',
+                                },
                             },
                         },
                     });
@@ -299,14 +1055,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                firstName: 'T',
+                                "Driver1": {
+                                    firstName: 'T',
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.firstName: String must contain at least 2 character(s)");
+                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.firstName: String must contain at least 2 character(s)");
                 });
             });
 
@@ -317,7 +1075,9 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                lastName: 'User',
+                                "Driver1": {
+                                    lastName: 'User',
+                                },
                             },
                         },
                     });
@@ -331,14 +1091,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                lastName: 'U',
+                                "Driver1": {
+                                    lastName: 'U',
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.lastName: String must contain at least 2 character(s)");
+                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.lastName: String must contain at least 2 character(s)");
                 });
             });
 
@@ -349,7 +1111,9 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                dateOfBirth: '1980-06-01',
+                                "Driver1": {
+                                    dateOfBirth: '1980-06-01',
+                                },
                             },
                         },
                     });
@@ -363,14 +1127,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                dateOfBirth: '1980',
+                                "Driver1": {
+                                    dateOfBirth: '1980',
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.dateOfBirth: Date must be in YYYY-MM-DD format");
+                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.dateOfBirth: Date must be in YYYY-MM-DD format");
                 });
 
                 test("should not create a new application if age is < 18", async () => {
@@ -379,14 +1145,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                dateOfBirth: '2020-06-01',
+                                "Driver1": {
+                                    dateOfBirth: '2020-06-01',
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.dateOfBirth: Must be at least 18 years old");
+                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.dateOfBirth: Must be at least 18 years old");
                 });
             });
 
@@ -397,7 +1165,9 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                gender: "male",
+                                "Driver1": {
+                                    gender: "male",
+                                },
                             },
                         },
                     });
@@ -411,14 +1181,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                gender: "other",
+                                "Driver1": {
+                                    gender: "other",
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toEqual(`additionalDrivers.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`)
+                    expect(validationResults.details.summary).toEqual(`additionalDrivers.Driver1.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`)
                 });
             });
 
@@ -429,7 +1201,9 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                relationship: "spouse",
+                                "Driver1": {
+                                    relationship: "spouse",
+                                },
                             },
                         },
                     });
@@ -443,14 +1217,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                relationship: "cousin",
+                                "Driver1": {
+                                    relationship: "cousin",
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe(`additionalDrivers.relationship: Invalid enum value. Expected 'spouse' | 'child' | 'parent' | 'sibling' | 'other', received 'cousin'`);
+                    expect(validationResults.details.summary).toBe(`additionalDrivers.Driver1.relationship: Invalid enum value. Expected 'spouse' | 'child' | 'parent' | 'sibling' | 'other', received 'cousin'`);
                 });
             });
 
@@ -461,14 +1237,16 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                maritalStatus: "other",
+                                "Driver1": {
+                                    maritalStatus: "other",
+                                },
                             },
                         },
                     });
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers: Unrecognized key(s) in object: 'maritalStatus'");
+                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1: Unrecognized key(s) in object: 'maritalStatus'");
                 });
             });
 
@@ -479,9 +1257,11 @@ describe("Hugo API", async () => {
                         url: '/applications',
                         payload: {
                             additionalDrivers: {
-                                driversLicense: {
-                                    number: 'ABC123456',
-                                    state: 'CA',
+                                "Driver1": {
+                                    driversLicense: {
+                                        number: 'ABC123456',
+                                        state: 'CA',
+                                    },
                                 },
                             },
                         },
@@ -489,7 +1269,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers: Unrecognized key(s) in object: 'driversLicense'");
+                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1: Unrecognized key(s) in object: 'driversLicense'");
                 });
             });
         });

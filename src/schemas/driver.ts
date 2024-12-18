@@ -12,7 +12,7 @@ export const DriverSchema = z.object({
         state: UsStateAbbreviationSchema,
     }),
 });
-export type Driver = z.infer<typeof DriverSchema>; 
+export type Driver = z.infer<typeof DriverSchema>;
 
 export const PartialDriverSchema = DriverSchema.partial();
 export type PartialDriver = z.infer<typeof PartialDriverSchema>;
@@ -23,7 +23,22 @@ export const AdditionalDriverSchema = DriverSchema.omit({
 }).extend({
     relationship: z.enum(['spouse', 'child', 'parent', 'sibling', 'other']),
 }).strict();
-export type AdditionalDriver = z.infer<typeof AdditionalDriverSchema>; 
+export type AdditionalDriver = z.infer<typeof AdditionalDriverSchema>;
 
-export const PartialAdditionalDriverSchema = AdditionalDriverSchema.partial();
+const createAdditionalDriversSchema = (schema: z.ZodTypeAny) => {
+    return z
+        .record(z.string(), schema)
+        .optional()
+        .refine(
+            (drivers) => drivers === undefined || Object.keys(drivers).length <= 3,
+            {
+                message: "No more than 3 additional drivers are allowed.",
+            }
+        );
+};
+
+export const AdditionalDriversSchema = createAdditionalDriversSchema(AdditionalDriverSchema);
+export type AdditionalDrivers = z.infer<typeof AdditionalDriversSchema>;
+
+export const PartialAdditionalDriverSchema = createAdditionalDriversSchema(AdditionalDriverSchema.partial());
 export type PartialAdditionalDriver = z.infer<typeof PartialAdditionalDriverSchema>;
