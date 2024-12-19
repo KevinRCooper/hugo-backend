@@ -1,32 +1,33 @@
-import { z } from 'zod';
-import {  AdditionalDriversSchema, DriverSchema, PartialAdditionalDriverSchema, PartialDriverSchema } from './driver';
-import { AddressSchema, PartialAddressSchema } from './address';
-import { PartialVehiclesSchema, VehiclesSchema } from './vehicle';
+import { z } from "zod";
+import { AdditionalDriverSchema, DriverSchema } from "./driver";
+import { AddressSchema } from "./address";
+import { VehicleSchema, VehiclesSchema } from "./vehicle";
 
-export const NewApplicationSchema = z.object({
-  primaryDriver: PartialDriverSchema,
-  mailingAddress: PartialAddressSchema,
-  garagingAddress: PartialAddressSchema,
-  vehicles: PartialVehiclesSchema,
-  additionalDrivers: PartialAdditionalDriverSchema,
-}).partial().strict();
-
-export const UpdateApplicationErrorsSchema = z.array(z.object({
-  field: z.string(),
-  message: z.string(),
-}));
-
-export const UpdateApplicationSchema = z.object({
-  data: NewApplicationSchema,
-  errors: UpdateApplicationErrorsSchema.optional(),
-}).strict();
+export const InProgressApplicationSchema = z
+  .object({
+    primaryDriver: DriverSchema.partial(),
+    mailingAddress: AddressSchema.partial(),
+    garagingAddress: AddressSchema.partial(),
+    vehicles: z.record(z.string(), VehicleSchema.partial()),
+    additionalDrivers: z
+      .record(z.string(), AdditionalDriverSchema.partial())
+      .optional(),
+  })
+  .partial();
+export type InProgressApplication = z.infer<typeof InProgressApplicationSchema>;
 
 export const ValidApplicationSchema = z.object({
   primaryDriver: DriverSchema,
   mailingAddress: AddressSchema,
   garagingAddress: AddressSchema,
   vehicles: VehiclesSchema,
-  additionalDrivers: AdditionalDriversSchema,
-  completed: z.literal(true),
-  quote: z.number(),
-}).strict();
+  additionalDrivers: z.record(z.string(), AdditionalDriverSchema).optional(),
+});
+
+export const CompletedApplicationSchema = ValidApplicationSchema.merge(
+  z.object({
+    completed: z.boolean(),
+    quote: z.number(),
+  }),
+);
+export type CompletedApplication = z.infer<typeof CompletedApplicationSchema>;

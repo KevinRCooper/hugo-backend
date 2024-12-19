@@ -10,15 +10,15 @@ as you see fit to ensure that all of the requirements are met.
 - Complete server implementation of the API definition
 - Tests to prove that the API meets the requirements
 - Data should be stored in a database
-    - SQLite is preferred
+  - SQLite is preferred
 - Language choice is up to you
-    - It is recommended to use TypeScript, but if you are more comfortable with another language,
-      feel free to use that.
+  - It is recommended to use TypeScript, but if you are more comfortable with another language,
+    feel free to use that.
 - Include documentation somewhere that calls out:
-    - Instructions on how to run the server
-    - Specific assumptions about the requirements that influenced your implementation.
-    - Changes/additions you made to the API spec.
-    - Things you would do differently or improve upon if you had more time.
+  - Instructions on how to run the server
+  - Specific assumptions about the requirements that influenced your implementation.
+  - Changes/additions you made to the API spec.
+  - Things you would do differently or improve upon if you had more time.
 
 ## Test Runner
 
@@ -49,17 +49,17 @@ the types must be enforced.
 - First Name
 - Last Name
 - Date of Birth
-    - Must be a valid date, but must not be a timestamp (it must be `YYYY-MM-DD`)
-    - Must be at least 18 years old
+  - Must be a valid date, but must not be a timestamp (it must be `YYYY-MM-DD`)
+  - Must be at least 18 years old
 - Gender
-    - Valid values are `male`, `female`, `non-binary`
+  - Valid values are `male`, `female`, `non-binary`
 - Marital Status
-    - Valid values are `single`, `married`, `divorced`, `widowed`
+  - Valid values are `single`, `married`, `divorced`, `widowed`
 - Driver's License
-    - Number
-        - Must be 9 uppercase alphanumeric characters
-    - State
-        - Must be valid US state abbreviation
+  - Number
+    - Must be 9 uppercase alphanumeric characters
+  - State
+    - Must be valid US state abbreviation
 
 ### Vehicles
 
@@ -68,33 +68,33 @@ The application must have at least 1 vehicle and must not have more than 3 vehic
 - Make
 - Model
 - Year
-    - Must be between 1985 and the current year + 1
+  - Must be between 1985 and the current year + 1
 - VIN
-    - Must be 17 characters exactly
-    - Restricted to `0-9` and `A-Z` except for `I`, `O`, `Q`
-    - (OPTIONAL) As a stretch goal, validate the VIN using the
-      [ISO 3779](https://en.wikipedia.org/wiki/Vehicle_identification_number#Check-digit_calculation)
-      algorithm
+  - Must be 17 characters exactly
+  - Restricted to `0-9` and `A-Z` except for `I`, `O`, `Q`
+  - (OPTIONAL) As a stretch goal, validate the VIN using the
+    [ISO 3779](https://en.wikipedia.org/wiki/Vehicle_identification_number#Check-digit_calculation)
+    algorithm
 
 ### Mailing Address
 
 - Street
 - Unit
-    - Optional field
+  - Optional field
 - City
 - State
-    - Must be valid US state abbreviation
+  - Must be valid US state abbreviation
 - Zip Code
-    - Must be a 5 digit string
+  - Must be a 5 digit string
 
 ### Garaging Address
 
 - Street
 - City
 - State
-    - Must be valid US state abbreviation
+  - Must be valid US state abbreviation
 - Zip Code
-    - Must be a 5 digit string
+  - Must be a 5 digit string
 
 ### Additional Drivers
 
@@ -103,12 +103,12 @@ The application may have additional drivers and must not have more than 3 additi
 - First Name
 - Last Name
 - Date of Birth
-    - Must be a valid date, but must not be a timestamp (it must be `YYYY-MM-DD`)
-    - Must be at least 16 years old
+  - Must be a valid date, but must not be a timestamp (it must be `YYYY-MM-DD`)
+  - Must be at least 16 years old
 - Gender
-    - Valid values are `male`, `female`, `non-binary`
+  - Valid values are `male`, `female`, `non-binary`
 - Relationship to Primary Driver
-    - Must be one of the following values: `spouse`, `child`, `parent`, `sibling`, `other`
+  - Must be one of the following values: `spouse`, `child`, `parent`, `sibling`, `other`
 
 ## API
 
@@ -118,9 +118,9 @@ generally applicable unless otherwise noted:
 - Use `PORT` environment variable for the port number to listen on (load via a `.env` file), with a
   fallback for `3000`
 - Partial data can be stored, but never invalid data
-    - For example, `dateOfBirth` can be missing while an application is being filled out, but it
-      must always be a valid value
-    - Invalid values must be rejected when submitted
+  - For example, `dateOfBirth` can be missing while an application is being filled out, but it
+    must always be a valid value
+  - Invalid values must be rejected when submitted
 
 ### Schema Shape
 
@@ -129,15 +129,15 @@ this if needed, but you should document those changes as part of your submission
 
 ```typescript
 type Application = {
-    primaryDriver: PrimaryDriver;
-    mailingAddress: AddressWithUnit;
-    garagingAddress: Address;
-    vehicles: {
-        [ID: string]: Vehicle;
-    };
-    additionalDrivers: {
-        [ID: string]: AdditionalDriver;
-    };
+  primaryDriver: PrimaryDriver;
+  mailingAddress: AddressWithUnit;
+  garagingAddress: Address;
+  vehicles: {
+    [ID: string]: Vehicle;
+  };
+  additionalDrivers: {
+    [ID: string]: AdditionalDriver;
+  };
 };
 ```
 
@@ -172,7 +172,7 @@ As an example, the following would remove the `dateOfBirth` field from the prima
 
 ```json
 {
-    "path": "primaryDriver.dateOfBirth"
+  "path": "primaryDriver.dateOfBirth"
 }
 ```
 
@@ -180,7 +180,7 @@ Or the following would remove the vehicle with ID `ABC123` from the application
 
 ```json
 {
-    "path": "vehicles.ABC123"
+  "path": "vehicles.ABC123"
 }
 ```
 
