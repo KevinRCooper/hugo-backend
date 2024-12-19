@@ -1,6 +1,6 @@
 import { FastifySchema } from "fastify";
 import { z } from 'zod';
-import { NewApplicationSchema } from "../../schemas/application";
+import { NewApplicationSchema, UpdateApplicationSchema, ValidApplicationSchema } from "../../schemas/application";
 
 export const newApplicationSchema = {
     summary: "Creates a new application",
@@ -9,7 +9,7 @@ export const newApplicationSchema = {
     body: NewApplicationSchema,
     response: {
         200: z.object({
-            id: z.string(),
+            id: z.number(),
         }),
     },
 } as const satisfies FastifySchema;
@@ -18,10 +18,11 @@ export const searchApplicationSchema = {
     summary: "Searches for applications",
     description: "Can be used to search for applications.",
     tags: ["Search"],
+    params: z.object({
+        id: z.string(),
+    }),
     response: {
-        200: z.object({
-            hello: z.string(),
-        }),
+        200: UpdateApplicationSchema.or(ValidApplicationSchema),
     },
 } as const satisfies FastifySchema;
 

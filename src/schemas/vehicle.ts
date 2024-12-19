@@ -19,20 +19,15 @@ export const VehicleSchema = z.object({
 });
 export type Vehicle = z.infer<typeof VehicleSchema>;
 
-const createVehiclesSchema = (schema: z.ZodTypeAny) => {
-    return z
-        .record(z.string(), schema)
-        .refine((vehicles) => Object.keys(vehicles).length >= 1, {
-            message: "At least one vehicle is required.",
-        })
-        .refine((vehicles) => Object.keys(vehicles).length <= 3, {
-            message: "No more than 3 vehicles are allowed.",
-        });
-};
-
-export const VehiclesSchema = createVehiclesSchema(VehicleSchema);
+export const VehiclesSchema = z
+    .record(z.string(), VehicleSchema)
+    .refine((vehicles) => !vehicles || Object.keys(vehicles).length >= 1, {
+        message: "At least one vehicle is required when vehicles are provided.",
+    })
+    .refine((vehicles) => !vehicles || Object.keys(vehicles).length <= 3, {
+        message: "No more than 3 vehicles are allowed when vehicles are provided.",
+    });
 export type Vehicles = z.infer<typeof VehiclesSchema>;
 
-export const PartialVehiclesSchema = createVehiclesSchema(VehicleSchema.partial());
+export const PartialVehiclesSchema = z.record(z.string(), VehicleSchema.partial());
 export const PartialVehicleSchema = VehicleSchema.partial();
-

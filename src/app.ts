@@ -3,9 +3,12 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastify from "fastify";
 import { hasZodFastifySchemaValidationErrors, isResponseSerializationError, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { applicationRoutes } from "./routes/application/application";
+import prisma from "./database";
 
 export const build = async (opts = {}) => {
     const app = fastify(opts);
+
+    // Register Swagger & Swagger UI
     await app.register(fastifySwagger, {
         mode: "dynamic",
         openapi: {
@@ -23,9 +26,12 @@ export const build = async (opts = {}) => {
             deepLinking: true,
         },
     });
+
+    // Register Zod Type Provider
     app.setValidatorCompiler(validatorCompiler);
     app.setSerializerCompiler(serializerCompiler);
 
+    // Set Custom Error Handler
     app.setErrorHandler((err, req, reply) => {
 
         if (hasZodFastifySchemaValidationErrors(err)) {
@@ -41,12 +47,7 @@ export const build = async (opts = {}) => {
                 error: "Response Validation Error",
                 message: "Request doesn't match the schema",
                 statusCode: 400,
-                details: {
-                    summary: concatenatedMessages,
-                    issues: err.validation,
-                    method: req.method,
-                    url: req.url,
-                },
+                summary: concatenatedMessages,
             });
         }
 
@@ -63,7 +64,14 @@ export const build = async (opts = {}) => {
             })
         }
     })
+
+    // Register Routes
     app.register(applicationRoutes);
+    
+    // Close Database Connection on Shutdown
+    app.addHook('onClose', async () => {
+        await prisma.$disconnect();
+    });
 
     return app;
 };
