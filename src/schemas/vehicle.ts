@@ -17,7 +17,6 @@ export const VehicleSchema = z.object({
     year: z.number().int().min(1985).max(new Date().getFullYear() + 1),
     vin: VinSchema,
 });
-export type Vehicle = z.infer<typeof VehicleSchema>;
 
 export const VehiclesSchema = z
     .record(z.string(), VehicleSchema)
@@ -27,7 +26,6 @@ export const VehiclesSchema = z
     .refine((vehicles) => !vehicles || Object.keys(vehicles).length <= 3, {
         message: "No more than 3 vehicles are allowed when vehicles are provided.",
     });
-export type Vehicles = z.infer<typeof VehiclesSchema>;
 
 export const PartialVehiclesSchema = z.record(z.string(), VehicleSchema.partial());
 export const PartialVehicleSchema = VehicleSchema.partial();

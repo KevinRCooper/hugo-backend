@@ -49,11 +49,13 @@ export const applicationRoutes = async (fastify: FastifyInstance) => {
             if (result.success) {
                 return { data: result.data };
             };
-            
-            const formattedErrors = result.error.errors.map((err) => ({
-                field: err.path.join("."),
-                message: err.message,
-              }));
+
+            const formattedErrors = result.error.errors
+                .filter((err) => typeof err.path[0] === "string" && !["completed", "quote"].includes(err.path[0] as string))
+                .map((err) => ({
+                    field: err.path.join("."),
+                    message: err.message,
+                }));
 
             return { data: partialResult.success ? partialResult.data : {}, errors: formattedErrors };
 

@@ -51,7 +51,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("primaryDriver.firstName: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("primaryDriver.firstName: String must contain at least 2 character(s)");
                 });
             });
 
@@ -83,7 +83,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("primaryDriver.lastName: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("primaryDriver.lastName: String must contain at least 2 character(s)");
                 });
             });
 
@@ -115,7 +115,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("primaryDriver.dateOfBirth: Date must be in YYYY-MM-DD format");
+                    expect(validationResults.summary).toBe("primaryDriver.dateOfBirth: Date must be in YYYY-MM-DD format");
                 });
 
                 test("should not create a new application if age is < 18", async () => {
@@ -131,7 +131,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("primaryDriver.dateOfBirth: Must be at least 18 years old");
+                    expect(validationResults.summary).toBe("primaryDriver.dateOfBirth: Must be at least 18 years old");
                 });
             });
 
@@ -163,8 +163,8 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toEqual(`primaryDriver.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`)
-                    //expect(validationResults.details.summary).toBe(`primaryDriver.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`);
+                    expect(validationResults.summary).toEqual(`primaryDriver.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`)
+                    //expect(validationResults.summary).toBe(`primaryDriver.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`);
                 });
             });
 
@@ -196,7 +196,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe(`primaryDriver.maritalStatus: Invalid enum value. Expected 'single' | 'married' | 'divorced' | 'widowed', received 'other'`);
+                    expect(validationResults.summary).toBe(`primaryDriver.maritalStatus: Invalid enum value. Expected 'single' | 'married' | 'divorced' | 'widowed', received 'other'`);
                 });
             });
 
@@ -234,7 +234,7 @@ describe("Hugo API", async () => {
                         const validationResults = await response.json()
 
                         expect(validationResults.statusCode).toBe(400);
-                        expect(validationResults.details.summary).toBe("primaryDriver.driversLicense.number: String must contain exactly 9 character(s); primaryDriver.driversLicense.state: Required");
+                        expect(validationResults.summary).toBe("primaryDriver.driversLicense.number: String must contain exactly 9 character(s); primaryDriver.driversLicense.state: Required");
                     });
                 });
 
@@ -271,7 +271,7 @@ describe("Hugo API", async () => {
                         const validationResults = await response.json()
 
                         expect(validationResults.statusCode).toBe(400);
-                        expect(validationResults.details.summary).toBe(`primaryDriver.driversLicense.number: Required; primaryDriver.driversLicense.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                        expect(validationResults.summary).toBe(`primaryDriver.driversLicense.number: Required; primaryDriver.driversLicense.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
                     });
                 });
             });
@@ -311,7 +311,7 @@ describe("Hugo API", async () => {
                 const validationResults = await response.json()
 
                 expect(validationResults.statusCode).toBe(400);
-                expect(validationResults.details.summary).toBe(`mailingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                expect(validationResults.summary).toBe(`mailingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
             });
 
             describe("Street", () => {
@@ -342,7 +342,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("mailingAddress.street: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("mailingAddress.street: String must contain at least 2 character(s)");
                 });
             });
 
@@ -376,7 +376,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("mailingAddress.unit: Expected string, received number");
+                    expect(validationResults.summary).toBe("mailingAddress.unit: Expected string, received number");
                 });
             });
 
@@ -410,7 +410,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("mailingAddress.city: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("mailingAddress.city: String must contain at least 2 character(s)");
                 });
             });
 
@@ -446,7 +446,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe(`mailingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                    expect(validationResults.summary).toBe(`mailingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
                 });
             });
 
@@ -484,7 +484,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("mailingAddress.zip: String must contain exactly 5 character(s); mailingAddress.zip: Invalid");
+                    expect(validationResults.summary).toBe("mailingAddress.zip: String must contain exactly 5 character(s); mailingAddress.zip: Invalid");
                 });
 
                 test("should not create a new application with an invalid zip in mailing address", async () => {
@@ -503,7 +503,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("mailingAddress.zip: Invalid");
+                    expect(validationResults.summary).toBe("mailingAddress.zip: Invalid");
                 });
 
                 test("should not create a new application with an invalid zip type in mailing address", async () => {
@@ -522,7 +522,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("mailingAddress.zip: Expected string, received number");
+                    expect(validationResults.summary).toBe("mailingAddress.zip: Expected string, received number");
                 });
             });
         });
@@ -561,7 +561,7 @@ describe("Hugo API", async () => {
                 const validationResults = await response.json()
 
                 expect(validationResults.statusCode).toBe(400);
-                expect(validationResults.details.summary).toBe(`garagingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                expect(validationResults.summary).toBe(`garagingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
             });
 
             describe("Street", () => {
@@ -592,7 +592,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("garagingAddress.street: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("garagingAddress.street: String must contain at least 2 character(s)");
                 });
             });
 
@@ -626,7 +626,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("garagingAddress.unit: Expected string, received number");
+                    expect(validationResults.summary).toBe("garagingAddress.unit: Expected string, received number");
                 });
             });
 
@@ -660,7 +660,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("garagingAddress.city: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("garagingAddress.city: String must contain at least 2 character(s)");
                 });
             });
 
@@ -696,7 +696,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe(`garagingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
+                    expect(validationResults.summary).toBe(`garagingAddress.state: Invalid enum value. Expected 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA' | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD' | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ' | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC' | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY', received 'C'`);
                 });
             });
 
@@ -734,7 +734,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("garagingAddress.zip: String must contain exactly 5 character(s); garagingAddress.zip: Invalid");
+                    expect(validationResults.summary).toBe("garagingAddress.zip: String must contain exactly 5 character(s); garagingAddress.zip: Invalid");
                 });
 
                 test("should not create a new application with an invalid zip in garaging address", async () => {
@@ -753,7 +753,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("garagingAddress.zip: Invalid");
+                    expect(validationResults.summary).toBe("garagingAddress.zip: Invalid");
                 });
 
                 test("should not create a new application with an invalid zip type in garaging address", async () => {
@@ -772,7 +772,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("garagingAddress.zip: Expected string, received number");
+                    expect(validationResults.summary).toBe("garagingAddress.zip: Expected string, received number");
                 });
             });
         });
@@ -828,46 +828,6 @@ describe("Hugo API", async () => {
                 expect(response.statusCode).toBe(200);
             });
 
-            test("should not create a new application with more than 3 vehicles", async () => {
-                const response = await app.inject({
-                    method: 'POST',
-                    url: '/applications',
-                    payload: {
-                        vehicles: {
-                            'ABC123': {
-                                make: 'Toyota',
-                                model: 'Camry',
-                                year: 2020,
-                                vin: '2C3KA53G38H165077',
-                            },
-                            'DEF456': {
-                                make: 'Honda',
-                                model: 'Civic',
-                                year: 2015,
-                                vin: '1FTEX15H7RKA82350',
-                            },
-                            'GHI789': {
-                                make: 'Ford',
-                                model: 'F-150',
-                                year: 2018,
-                                vin: '2A4GP44R36R638066',
-                            },
-                            'JKL012': {
-                                make: 'Chevy',
-                                model: 'Silverado',
-                                year: 2019,
-                                vin: 'JM1BL1S5XA1129860',
-                            },
-                        }
-                    },
-                });
-                const validationResults = await response.json()
-
-                expect(response.statusCode).toBe(400);
-                expect(validationResults.details.summary).toBe("vehicles: No more than 3 vehicles are allowed.");
-
-            });
-
             describe("Make", () => {
                 test("should create a new application with a valid make", async () => {
                     const response = await app.inject({
@@ -900,7 +860,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("vehicles.ABC123.make: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("vehicles.ABC123.make: String must contain at least 2 character(s)");
                 });
             });
 
@@ -936,7 +896,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("vehicles.ABC123.model: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("vehicles.ABC123.model: String must contain at least 2 character(s)");
                 });
             });
 
@@ -972,7 +932,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("vehicles.ABC123.year: Number must be greater than or equal to 1985");
+                    expect(validationResults.summary).toBe("vehicles.ABC123.year: Number must be greater than or equal to 1985");
                 });
             });
 
@@ -1008,7 +968,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("vehicles.ABC123.vin: String must contain exactly 17 character(s); vehicles.ABC123.vin: Invalid VIN check digit");
+                    expect(validationResults.summary).toBe("vehicles.ABC123.vin: String must contain exactly 17 character(s); vehicles.ABC123.vin: Invalid VIN check digit");
                 });
 
                 test("should not create a new application with an invalid vin sequence", async () => {
@@ -1026,7 +986,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("vehicles.ABC123.vin: Invalid VIN check digit");
+                    expect(validationResults.summary).toBe("vehicles.ABC123.vin: Invalid VIN check digit");
                 });
             });
         });
@@ -1064,7 +1024,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.firstName: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("additionalDrivers.Driver1.firstName: String must contain at least 2 character(s)");
                 });
             });
 
@@ -1100,7 +1060,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.lastName: String must contain at least 2 character(s)");
+                    expect(validationResults.summary).toBe("additionalDrivers.Driver1.lastName: String must contain at least 2 character(s)");
                 });
             });
 
@@ -1136,7 +1096,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.dateOfBirth: Date must be in YYYY-MM-DD format");
+                    expect(validationResults.summary).toBe("additionalDrivers.Driver1.dateOfBirth: Date must be in YYYY-MM-DD format");
                 });
 
                 test("should not create a new application if age is < 18", async () => {
@@ -1154,7 +1114,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1.dateOfBirth: Must be at least 18 years old");
+                    expect(validationResults.summary).toBe("additionalDrivers.Driver1.dateOfBirth: Must be at least 18 years old");
                 });
             });
 
@@ -1190,7 +1150,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toEqual(`additionalDrivers.Driver1.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`)
+                    expect(validationResults.summary).toEqual(`additionalDrivers.Driver1.gender: Invalid enum value. Expected 'male' | 'female' | 'non-binary', received 'other'`)
                 });
             });
 
@@ -1226,7 +1186,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe(`additionalDrivers.Driver1.relationship: Invalid enum value. Expected 'spouse' | 'child' | 'parent' | 'sibling' | 'other', received 'cousin'`);
+                    expect(validationResults.summary).toBe(`additionalDrivers.Driver1.relationship: Invalid enum value. Expected 'spouse' | 'child' | 'parent' | 'sibling' | 'other', received 'cousin'`);
                 });
             });
 
@@ -1246,7 +1206,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1: Unrecognized key(s) in object: 'maritalStatus'");
+                    expect(validationResults.summary).toBe("additionalDrivers.Driver1: Unrecognized key(s) in object: 'maritalStatus'");
                 });
             });
 
@@ -1269,7 +1229,7 @@ describe("Hugo API", async () => {
                     const validationResults = await response.json()
 
                     expect(validationResults.statusCode).toBe(400);
-                    expect(validationResults.details.summary).toBe("additionalDrivers.Driver1: Unrecognized key(s) in object: 'driversLicense'");
+                    expect(validationResults.summary).toBe("additionalDrivers.Driver1: Unrecognized key(s) in object: 'driversLicense'");
                 });
             });
         });

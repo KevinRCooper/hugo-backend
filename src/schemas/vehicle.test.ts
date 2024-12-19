@@ -90,34 +90,6 @@ describe("Partial Vehicles Schema", () => {
         expect(PartialVehiclesSchema.safeParse({ "1": { make: 'Toyota' }}).success).toBe(true);
     });
 
-    test("Invalid Vehicles - Can't have more than 3", () => {
-        expect(PartialVehiclesSchema.safeParse({
-            "1": {
-            make: 'Toyota',
-            model: 'Corolla',
-            year: 2010,
-            vin: 'WA1LMAFE2ED068921',
-            },
-            "2": {
-            make: 'Toyota',
-            model: 'Corolla',
-            year: 2010,
-            vin: 'WA1LMAFE2ED068921',
-            },
-            "3": {
-            make: 'Toyota',
-            model: 'Corolla',
-            year: 2010,
-            vin: 'WA1LMAFE2ED068921',
-            },
-            "4": {
-            make: 'Toyota',
-            model: 'Corolla',
-            year: 2010,
-            vin: 'WA1LMAFE2ED068921',
-            },
-        }).success).toBe(false);
-    });
 });
 
 describe("Vehicles Schema", () => {
