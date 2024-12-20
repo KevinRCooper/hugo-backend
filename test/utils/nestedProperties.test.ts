@@ -41,8 +41,10 @@ describe("deleteNestedProperty", () => {
   test("Throws an error if the input is not an object", () => {
     expect(() => deleteNestedProperty(null, "a")).toThrow(TypeError);
     expect(() => deleteNestedProperty(undefined, "a")).toThrow(TypeError);
-    expect(() => deleteNestedProperty(123 as any, "a")).toThrow(TypeError);
-    expect(() => deleteNestedProperty("string" as any, "a")).toThrow(TypeError);
+    expect(() => deleteNestedProperty(123 as unknown, "a")).toThrow(TypeError);
+    expect(() => deleteNestedProperty("string" as unknown, "a")).toThrow(
+      TypeError,
+    );
   });
 
   test("Handles an empty path gracefully", () => {
