@@ -5,7 +5,6 @@ import {
   describe,
   test,
   expect,
-  expectTypeOf,
 } from "vitest";
 import { build } from "../src/app";
 import { FastifyInstance } from "fastify";

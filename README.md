@@ -1,192 +1,157 @@
-# Hugo Backend Take Home Challenge
+# Hugo API Backend
+[![Fastify](https://img.shields.io/badge/Fastify-%5E4.x-blue?style=flat&logo=fastify&logoColor=white)](https://fastify.dev)
+[![TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF)](https://www.typescriptlang.org)
+[![SQLite](https://img.shields.io/badge/SQLite-blue?logo=sqlite&logoColor=white)](https://www.sqlite.org)
+[![Testing](https://img.shields.io/badge/-vitest-6e9f18?style=flat&logo=vitest&logoColor=ffffff)](https://vitest.dev)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
-Create an API that allows for customers to create, update, and submit an application to get a quote
-for auto insurance. The API should fulfill the requirements outlined below at a minimum. There is a
-sample test runner that checks for basic functionality. You are encouraged to add additional tests
-as you see fit to ensure that all of the requirements are met.
+This is a simple API backend for an auto insurance quote application. It is implemented in TypeScript using Fastify and SQLite.
 
-## Goals
+## :rocket: Getting Started
 
-- Complete server implementation of the API definition
-- Tests to prove that the API meets the requirements
-- Data should be stored in a database
-  - SQLite is preferred
-- Language choice is up to you
-  - It is recommended to use TypeScript, but if you are more comfortable with another language,
-    feel free to use that.
-- Include documentation somewhere that calls out:
-  - Instructions on how to run the server
-  - Specific assumptions about the requirements that influenced your implementation.
-  - Changes/additions you made to the API spec.
-  - Things you would do differently or improve upon if you had more time.
+### Install Dependencies
 
-## Test Runner
-
-To use the included test runner, you will need Node.js installed. Then you can run
-
-```bash
-# NOTE: your server will need to be running already for the provided test runner to work
+```shell
 npm install
-npm test
 ```
 
-The provided test case will go through a "happy path" scenario that hits the documented routes and
-ensures a `200` response is returned.
+### Set Environment Variables
 
-Your submission should include additional test cases that show the API meets the requirements
-outlined below.
+Create a `.env` file in the root directory and set the following environment variables:
+> Note: See the `example.env` file for an example.
 
-## Data Requirements
-
-The following represents the high level items that must be collected for a completed quote
-application
-
-All fields are required unless otherwise noted, must adhere to the data validation requirements, and
-the types must be enforced.
-
-### Primary Driver
-
-- First Name
-- Last Name
-- Date of Birth
-  - Must be a valid date, but must not be a timestamp (it must be `YYYY-MM-DD`)
-  - Must be at least 18 years old
-- Gender
-  - Valid values are `male`, `female`, `non-binary`
-- Marital Status
-  - Valid values are `single`, `married`, `divorced`, `widowed`
-- Driver's License
-  - Number
-    - Must be 9 uppercase alphanumeric characters
-  - State
-    - Must be valid US state abbreviation
-
-### Vehicles
-
-The application must have at least 1 vehicle and must not have more than 3 vehicles.
-
-- Make
-- Model
-- Year
-  - Must be between 1985 and the current year + 1
-- VIN
-  - Must be 17 characters exactly
-  - Restricted to `0-9` and `A-Z` except for `I`, `O`, `Q`
-  - (OPTIONAL) As a stretch goal, validate the VIN using the
-    [ISO 3779](https://en.wikipedia.org/wiki/Vehicle_identification_number#Check-digit_calculation)
-    algorithm
-
-### Mailing Address
-
-- Street
-- Unit
-  - Optional field
-- City
-- State
-  - Must be valid US state abbreviation
-- Zip Code
-  - Must be a 5 digit string
-
-### Garaging Address
-
-- Street
-- City
-- State
-  - Must be valid US state abbreviation
-- Zip Code
-  - Must be a 5 digit string
-
-### Additional Drivers
-
-The application may have additional drivers and must not have more than 3 additional drivers.
-
-- First Name
-- Last Name
-- Date of Birth
-  - Must be a valid date, but must not be a timestamp (it must be `YYYY-MM-DD`)
-  - Must be at least 16 years old
-- Gender
-  - Valid values are `male`, `female`, `non-binary`
-- Relationship to Primary Driver
-  - Must be one of the following values: `spouse`, `child`, `parent`, `sibling`, `other`
-
-## API
-
-The routes that the API should implement are outlined below. The following requirements are also
-generally applicable unless otherwise noted:
-
-- Use `PORT` environment variable for the port number to listen on (load via a `.env` file), with a
-  fallback for `3000`
-- Partial data can be stored, but never invalid data
-  - For example, `dateOfBirth` can be missing while an application is being filled out, but it
-    must always be a valid value
-  - Invalid values must be rejected when submitted
-
-### Schema Shape
-
-The general shape of the application schema should look like the following. You are free to modify
-this if needed, but you should document those changes as part of your submission.
-
-```typescript
-type Application = {
-  primaryDriver: PrimaryDriver;
-  mailingAddress: AddressWithUnit;
-  garagingAddress: Address;
-  vehicles: {
-    [ID: string]: Vehicle;
-  };
-  additionalDrivers: {
-    [ID: string]: AdditionalDriver;
-  };
-};
+```shell
+PORT=8080
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
 ```
 
-Note that `vehicles` and `additionalDrivers` are objects with an ID as the key (they are not
-arrays).
+### Run the Server
 
-### Routes
+```shell
+npm run start
+```
+> The `npm run start` script will do a hot reload of the server when changes are made.
 
-#### `POST /applications`
+## :hammer: API Documentation
+```mermaid
+graph TD
+  A[Applications]
+  
+  A --> B[POST /applications]
+  B --> C[Create Application]
+  C --> D[Save Application to Database]
+  D --> E[Return Application ID]
 
-Initializes a new application. This should allow including some partial set of data to initialize
-the new application.
+  A --> F[GET /applications/:id]
+  F --> G[Retrieve Application from Database]
+  G --> H[Return Application Data]
 
-#### `GET /applications/:id`
+  A --> I[PATCH /applications/:id]
+  I --> J[Update Application Data]
+  J --> K[Save Updated Application to Database]
+  K --> L[Return Updated Application Data]
 
-Returns the application data for the specified ID. Must also include a calculated price for the
-quote _if_ the application is completely valid. Otherwise, should include list of validation errors
-that need to be addressed to submit the application.
+  A --> M[DELETE /applications/:id/data]
+  M --> N[Delete Data from Application]
+  N --> O[Save Updated Application to Database]
+  O --> P[Return Updated Application Data]
 
-#### `PATCH /applications/:id`
+  A --> Q[POST /applications/:id/submit]
+  Q --> R[Submit Application]
+  R --> S[Calculate Quote Price]
+  S --> T[Return Quote Price]
 
-Updates an existing application with updated data. The submitted data will be a partial subset of
-the application schema, and should be merged into the existing application data. Updates should not
-be allowed after an application has been submitted.
-
-#### `DELETE /applications/:id/data`
-
-Removes the specified data from the application using the path to the data. The path should consist
-of the keys that target the data to be moved joined into a string with `.` as the separator.
-
-As an example, the following would remove the `dateOfBirth` field from the primary driver
-
-```json
-{
-  "path": "primaryDriver.dateOfBirth"
-}
 ```
 
-Or the following would remove the vehicle with ID `ABC123` from the application
+The API documentation is available at the `/docs` route. You can access it by navigating to `http://localhost:<PORT>/docs` in your browser.
 
-```json
-{
-  "path": "vehicles.ABC123"
-}
+From there, you can interact with the API by sending requests to the various endpoints by using the `Try it out` button.
+
+During development, you can use the Prisma Studio to interact with the database. To start Prisma Studio, run the following command in another terminal window:
+
+```shell
+npx prisma studio
 ```
 
-Deletions should not be allowed after an application has been submitted.
+## :white_check_mark: Testing
 
-#### `POST /applications/:id/submit`
+### Run Tests
 
-Submits a completed application, and returns a calculated price for the quote. For this exercise, a
-random number can be returned.
+```shell
+npm run test
+```
+Using this script will test the server, and automatically re-run the tests when changes are made.
+
+### Notes About Testing
+
+- The tests are writting in Vitest
+- The tests are located in the `tests` directory
+- The main test suite is `api.test.ts`. This is a full end-to-end test suite that tests the API endpoints.
+> Warning: The tests will clear out the database before each test to ensure each test is run in isolation. This means that any data in the database will be lost.
+- The `app.test.ts` file is a demonstration of how to test the Fastify server using the `fastify.inject` method. This is useful for testing the server without making actual HTTP requests.
+- The `utils.test.ts` file contains utility functions that are used in the tests.
+- The `mocks` directory contains mock data that is used in the tests.
+- The `schemas` folder contains tests against the Zod schemas used in the application.
+
+### Testing Diagram
+#### Setup
+```mermaid
+graph LR
+  Setup[beforeAll: Setup Server] --> Init[Initialize Fastify Server]
+  Init --> Address[Determine Server Address]
+  Address --> BaseURL[Set Base URL]
+
+```
+
+#### Lifecycle
+```mermaid
+graph LR
+  BeforeEach[beforeEach: Reset Database] --> Inject[Inject Test Data]
+  Inject --> Execute[Test Execution]
+  Execute --> Assertions[Assertions]
+
+```
+
+#### Teardown
+```mermaid
+graph LR
+  Teardown[afterAll: Teardown] --> Close[Close Server]
+  Close --> End[Tests Completed]
+
+```
+
+## :construction: Development
+While developing, you might find it useful to use the following scripts:
+
+### Format Code
+
+```shell
+npm run format
+```
+
+### Lint Code
+
+```shell
+npm run lint
+```
+
+## :notebook: Project Notes
+Some minor changes were made to the API spec:  
+- Some routes return `206` to indicate that the request was successful but the response is partial. This is to indicate that the application is not yet complete.
+- I expanded upon the status codes returned by the API to include `400`, `404`, and `500` status codes.
+
+Changes to Testing:
+- `app.test.ts` was re-written from scratch (while preserving the original intents). 
+- The reason for this was to make the tests run in isolation, so tests do not depend on each other. 
+- This also meant that I didn't need to run the tests in a specific order to not impact performance.
+> **Note**: Tests now **automatically start and stop the server**, so the developer doesn't have to worry about starting and stopping the server manually before running the tests which I felt would be a welcomed improvement.
+
+Stretch Goal:
+- :white_check_mark: VIN validation using the ISO 3779 algorithm was implimented!
+
+## :bulb: Improvements
+- Add more tests to cover more edge cases.
+- Add more integration tests using `fastify.inject` to test the server without making actual HTTP requests.
+- Improve the OpenAPI documentation to include more details about the API.
+- Design the database schema to be more normalized and efficient.
+- Include a `test` specific database that is used only for testing purposes.
